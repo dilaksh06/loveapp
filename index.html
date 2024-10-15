@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts: Great Vibes -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <!-- tsParticles CSS (optional, as tsParticles handles its own styling) -->
+    <style>
+        body {
+            /* Fallback background color */
+            background-color: #f0f8ff;
+            /* Ensure the particles canvas covers the entire background */
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+            /* Prevent scrollbars due to particles */
+            font-family: Arial, sans-serif;
+        }
+
+        /* Container for the Love Calculator Card */
+        .container {
+            position: relative;
+            z-index: 1;
+            /* Ensure it's above the particles */
+            padding: 20px;
+        }
+
+        /* Card Styling */
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+            /* Slightly transparent to show particles subtly */
+        }
+
+        .card-header {
+            background: transparent;
+            border-bottom: none;
+            text-align: center;
+        }
+
+        /* Custom Font for Header */
+        .custom-font {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.5rem;
+            letter-spacing: 1px;
+        }
+
+        /* Button Styling */
+        .btn-custom {
+            background-color: #7bff69;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background-color: #21e04a;
+            color: #ffffff;
+
+        }
+
+        /* Reset Button Styling */
+        .btn-reset {
+            background-color: #6c757d;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-reset:hover {
+            background-color: #5a6268;
+        }
+
+        /* Result Styling */
+        #result {
+            margin-top: 20px;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 576px) {
+            .custom-font {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- tsParticles Container -->
+    <div id="tsparticles"></div>
+
+    <!-- Love Calculator Container -->
+    <div class="container">
+        <div class="card p-4">
+            <div class="card-header">
+                <h1 class="mb-0 custom-font"><i class="bi bi-heart-fill text-danger"></i> Love Calculator</h1>
+            </div>
+            <div class="card-body">
+                <form id="loveCalculatorForm">
+                    <div class="mb-3">
+                        <label for="name1" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="name1" name="name1" placeholder="Enter your name"
+                            required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="name2" class="form-label">Name of Your Loved One</label>
+                        <input type="text" class="form-control" id="name2" name="name2"
+                            placeholder="Name of Your Loved One" required>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-custom">Calculate Love</button>
+                        <button type="button" id="resetButton" class="btn btn-reset">Reset</button>
+                    </div>
+                </form>
+                <div id="result" class="alert d-none" role="alert">
+                    <!-- Result will be displayed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- tsParticles JS -->
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.11.1/tsparticles.bundle.min.js"></script>
+    <!-- Bootstrap JS (optional, for interactive components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- JavaScript to handle form submission via AJAX and reset functionality -->
+    <script>
+        // Initialize tsParticles
+        tsParticles.load("tsparticles", {
+            background: {
+                color: {
+                    value: "#f0f8ff" // Fallback background color
+                }
+            },
+            fpsLimit: 60,
+            interactivity: {
+                events: {
+                    onClick: {
+                        enable: false,
+                        mode: "push"
+                    },
+                    onHover: {
+                        enable: false,
+                        mode: "repulse"
+                    },
+                    resize: true
+                },
+                modes: {
+                    push: {
+                        quantity: 4
+                    },
+                    repulse: {
+                        distance: 200,
+                        duration: 0.4
+                    }
+                }
+            },
+            particles: {
+                number: {
+                    value: 20,
+                    density: {
+                        enable: true,
+                        area: 800
+                    }
+                },
+                color: {
+                    value: "#ff69b4" // Pink color for hearts
+                },
+                shape: {
+                    type: "image",
+                    image: [
+                        {
+                            src: "./heat.svg", // Heart image URL
+                            width: 32,
+                            height: 32
+                        }
+                    ]
+                },
+                opacity: {
+                    value: 0.8,
+                    random: {
+                        enable: true,
+                        minimumValue: 0.5
+                    },
+                    anim: {
+                        enable: false
+                    }
+                },
+                size: {
+                    value: 20,
+                    random: {
+                        enable: true,
+                        minimumValue: 10
+                    },
+                    anim: {
+                        enable: false
+                    }
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "top",
+                    random: false,
+                    straight: false,
+                    outModes: {
+                        default: "out"
+                    }
+                }
+            },
+            detectRetina: true
+        });
+
+        // Handle Form Submission
+        document.getElementById('loveCalculatorForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const name1 = document.getElementById('name1').value.trim();
+            const name2 = document.getElementById('name2').value.trim();
+
+            if (name1 === '' || name2 === '') {
+                showResult('Please enter both names.', 'danger');
+                return;
+            }
+
+            // Prepare form data
+            const formData = new FormData();
+            formData.append('name1', name1);
+            formData.append('name2', name2);
+
+            // Show loading spinner
+            showResult('<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div> Calculating...', 'info');
+
+            // Disable buttons to prevent multiple submissions
+            toggleButtons(true);
+
+            // Send AJAX request to PHP script
+            fetch('save_names.php', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        showResult(data.message, 'success');
+                    } else {
+                        showResult(data.message, 'danger');
+                    }
+                    toggleButtons(false);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showResult('An unexpected error occurred.', 'danger');
+                    toggleButtons(false);
+                });
+        });
+
+        // Event listener for the Reset button
+        document.getElementById('resetButton').addEventListener('click', function () {
+            resetForm();
+        });
+
+        function showResult(message, type) {
+            const resultDiv = document.getElementById('result');
+            resultDiv.className = `alert alert-${type}`;
+            resultDiv.innerHTML = message;
+            resultDiv.classList.remove('d-none');
+        }
+
+        function resetForm() {
+            const form = document.getElementById('loveCalculatorForm');
+            form.reset(); // Reset form fields
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.classList.add('d-none'); // Hide the result message
+            resultDiv.innerHTML = ''; // Clear any existing messages
+        }
+
+        function toggleButtons(disabled) {
+            document.querySelectorAll('button').forEach(button => {
+                button.disabled = disabled;
+            });
+        }
+    </script>
+</body>
+
+</html>
